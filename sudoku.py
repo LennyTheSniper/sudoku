@@ -13,31 +13,33 @@ LARGEUR = 650
 
 #fonction
 def generation():
+    """Genere une liste 9x9 complète de manière aléatoire"""
     sudoku = list()
     gauche, milieu, droite = [1,2], [3,4,5], [6,7,8]
-    a = [1,2,3,4,5,6,7,8,9]
-    rd.shuffle(a)
-    y, z = rd.choice(milieu), rd.choice(droite)
-    print(y,z)
-    milieu.remove(y)
-    droite.remove(z)
+    nombre = [1,2,3,4,5,6,7,8,9]
+    rd.shuffle(nombre)
+    m, d = rd.choice(milieu), rd.choice(droite)
+    print(m,d)
+    milieu.remove(m)
+    droite.remove(d)
     print(milieu, droite)
-    a1, a2 = list(np.roll(a, y)), list(np.roll(a, z))
-    print(a,a1,a2)
-    x, y, z = rd.choice(gauche), rd.choice(milieu), rd.choice(droite)
-    print(x,y,z)
-    gauche.remove(x)
-    milieu.remove(y)
-    droite.remove(z)
+    liste1, liste2 = list(np.roll(a, y)), list(np.roll(a, z))
+    print(nombre, liste1, liste2)
+    g, m, d = rd.choice(gauche), rd.choice(milieu), rd.choice(droite)
+    print(g, m, d)
+    gauche.remove(g)
+    milieu.remove(m)
+    droite.remove(d)
     print(gauche,milieu,droite)
-    a3, a4, a5 = list(np.roll(a,x)), list(np.roll(a, y)), list(np.roll(a, z))
-    print(a,a1,a2,a3,a4,a5)
-    a6, a7, a8 = list(np.roll(a,gauche[0])), list(np.roll(a, milieu[0])), list(np.roll(a, droite[0]))
-    sudoku.append(a), sudoku.append(a1), sudoku.append(a2), sudoku.append(a3), sudoku.append(a4), sudoku.append(a5), sudoku.append(a6), sudoku.append(a7), sudoku.append(a8)
+    liste3, liste4, liste5 = list(np.roll(a,x)), list(np.roll(a, y)), list(np.roll(a, z))
+    print(nombre, liste1,liste2,liste3,liste4,liste5)
+    liste6, liste7, liste8 = list(np.roll(a,gauche[0])), list(np.roll(a, milieu[0])), list(np.roll(a, droite[0]))
+    sudoku.append(nombre), sudoku.append(liste1), sudoku.append(liste2), sudoku.append(liste3), sudoku.append(liste4), sudoku.append(liste5), sudoku.append(liste6), sudoku.append(liste7), sudoku.append(liste8)
     return sudoku
 
 
 def grille():
+    """Genere une grille sur l'interface graphique"""
     for i in range(9):
         for j in range(9):
             x, y = (LARGEUR//9)*i, (HAUTEUR//9)*j
@@ -50,19 +52,23 @@ def grille():
 
 
 def rejouer():
+    """Permet de relancer une partie (à finir)"""
     canvas.delete('all')
     grille()
 
 
 def donnecoord(event):
+    """Renvoie les coordonnées de l'endroit où on a cliqué (à finir)"""
     print("vous avez clic gauche")
 
 
 def entrernombre(event):
+    """(à finir)"""
     print("entrer presser")
 
 
 def checkligne(a):
+    """Verifie que la ligne respecte les regles du sudoku"""
     nombre = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     k = 0
     for i in range(9):
@@ -73,6 +79,7 @@ def checkligne(a):
 
 
 def lirecolonne(a):
+    """Lit les colonnes sous forme de ligne"""
     acolonne = [[0]*9 for i in range(9)]
     i = 0
     j = 0
@@ -83,6 +90,7 @@ def lirecolonne(a):
 
 
 def lirecarre(a):
+    """Lit les sous-carrés sous forme de ligne"""
     acarre = [[0]*9 for i in range(9)]
     k, l = 0, 0
     while len(acarre[8]) != 8:
@@ -128,26 +136,28 @@ def lirecarre(a):
 
 
 def verification(a):
+    """Verfie que tout le sudoku respecte les regles"""
     return checkligne(a), lirecolonne(checkligne(a)), lirecarre(checkligne(a))
 
 
-def diff(a, str):
-    b = cp.deepcopy(a)
+def difficulte(liste, str):
+    """Renvoie un sudoku à completer selon la difficulté"""
+    copie = cp.deepcopy(liste)
     if str == "facile":
-        d = 43
+        case = 43
     elif str == "moyen":
-        d = 51
+        case = 51
     elif str == "difficile":
-        d = 56
-    for i in range(d):
-        while d > 1:
+        case = 56
+    for i in range(case):
+        while case > 1:
             i, j = rd.randint(0,8), rd.randint(0,8)
-            if b[i][j] == 0:
+            if copie[i][j] == 0:
                 pass
             else:
-                b[i][j] = 0
-                d -= 1
-    return a, b
+                copie[i][j] = 0
+                case -= 1
+    return liste, copie 
 
 
 #interface graphique
