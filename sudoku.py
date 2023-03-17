@@ -23,7 +23,7 @@ def generation():
     milieu.remove(m)
     droite.remove(d)
     print(milieu, droite)
-    liste1, liste2 = list(np.roll(a, y)), list(np.roll(a, z))
+    liste1, liste2 = list(np.roll(nombre, m)), list(np.roll(nombre, d))
     print(nombre, liste1, liste2)
     g, m, d = rd.choice(gauche), rd.choice(milieu), rd.choice(droite)
     print(g, m, d)
@@ -31,9 +31,9 @@ def generation():
     milieu.remove(m)
     droite.remove(d)
     print(gauche,milieu,droite)
-    liste3, liste4, liste5 = list(np.roll(a,x)), list(np.roll(a, y)), list(np.roll(a, z))
+    liste3, liste4, liste5 = list(np.roll(nombre,g)), list(np.roll(nombre, m)), list(np.roll(nombre, d))
     print(nombre, liste1,liste2,liste3,liste4,liste5)
-    liste6, liste7, liste8 = list(np.roll(a,gauche[0])), list(np.roll(a, milieu[0])), list(np.roll(a, droite[0]))
+    liste6, liste7, liste8 = list(np.roll(nombre,gauche[0])), list(np.roll(nombre, milieu[0])), list(np.roll(nombre, droite[0]))
     sudoku.append(nombre), sudoku.append(liste1), sudoku.append(liste2), sudoku.append(liste3), sudoku.append(liste4), sudoku.append(liste5), sudoku.append(liste6), sudoku.append(liste7), sudoku.append(liste8)
     return sudoku
 
