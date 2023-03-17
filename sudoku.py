@@ -20,21 +20,21 @@ def generation():
     nombre = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     rd.shuffle(nombre)
     m, d = rd.choice(milieu), rd.choice(droite)
-    print(m, d)
+    #print(m, d)
     milieu.remove(m)
     droite.remove(d)
-    print(milieu, droite)
+    #print(milieu, droite)
     liste1, liste2 = list(np.roll(nombre, m)), list(np.roll(nombre, d))
-    print(nombre, liste1, liste2)
+    #print(nombre, liste1, liste2)
     g, m, d = rd.choice(gauche), rd.choice(milieu), rd.choice(droite)
-    print(g, m, d)
+    #print(g, m, d)
     gauche.remove(g)
     milieu.remove(m)
     droite.remove(d)
-    print(gauche, milieu, droite)
+    #print(gauche, milieu, droite)
     liste3, liste4 = list(np.roll(nombre, g)), list(np.roll(nombre, m))
     liste5 = list(np.roll(nombre, d))
-    print(nombre, liste1, liste2, liste3, liste4, liste5)
+    #print(nombre, liste1, liste2, liste3, liste4, liste5)
     liste6 = list(np.roll(nombre, gauche[0]))
     liste7 = list(np.roll(nombre, gauche[0]))
     liste8 = list(np.roll(nombre, droite[0]))
@@ -105,7 +105,7 @@ def lirecarre(a):
     """Lit les sous-carrés sous forme de ligne"""
     acarre = [[0]*9 for i in range(9)]
     k, l = 0, 0
-    while len(acarre[8]) != 8:
+    while len(acarre[8]) != 9:
         for i in range(3):
             for j in range(3):
                 acarre[i][j] = a[k+i][l+j]
@@ -148,8 +148,9 @@ def lirecarre(a):
 
 def verification(a):
     """Verfie que tout le sudoku respecte les regles"""
-    return checkligne(a), lirecolonne(checkligne(a)), lirecarre(checkligne(a))
+    return checkligne(a), checkligne(lirecolonne(a)), checkligne(lirecarre(a))
 
+print(verification(generation()))
 
 def difficulte(liste, str):
     """Renvoie un sudoku à completer selon la difficulté"""
