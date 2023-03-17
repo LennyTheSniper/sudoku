@@ -1,25 +1,26 @@
-#import
+# import
 import tkinter as tk
 import random as rd
 import numpy as np
 import copy as cp
 
 
-#variables
+# variables
 en_jeu = False
 
 HAUTEUR = 650
 LARGEUR = 650
 
-#fonction
+
+# fonction
 def generation():
     """Genere une liste 9x9 complète de manière aléatoire"""
     sudoku = list()
-    gauche, milieu, droite = [1,2], [3,4,5], [6,7,8]
-    nombre = [1,2,3,4,5,6,7,8,9]
+    gauche, milieu, droite = [1, 2], [3, 4, 5], [6, 7, 8]
+    nombre = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     rd.shuffle(nombre)
     m, d = rd.choice(milieu), rd.choice(droite)
-    print(m,d)
+    print(m, d)
     milieu.remove(m)
     droite.remove(d)
     print(milieu, droite)
@@ -30,11 +31,16 @@ def generation():
     gauche.remove(g)
     milieu.remove(m)
     droite.remove(d)
-    print(gauche,milieu,droite)
-    liste3, liste4, liste5 = list(np.roll(nombre,g)), list(np.roll(nombre, m)), list(np.roll(nombre, d))
-    print(nombre, liste1,liste2,liste3,liste4,liste5)
-    liste6, liste7, liste8 = list(np.roll(nombre,gauche[0])), list(np.roll(nombre, milieu[0])), list(np.roll(nombre, droite[0]))
-    sudoku.append(nombre), sudoku.append(liste1), sudoku.append(liste2), sudoku.append(liste3), sudoku.append(liste4), sudoku.append(liste5), sudoku.append(liste6), sudoku.append(liste7), sudoku.append(liste8)
+    print(gauche, milieu, droite)
+    liste3, liste4 = list(np.roll(nombre, g)), list(np.roll(nombre, m))
+    liste5 = list(np.roll(nombre, d))
+    print(nombre, liste1, liste2, liste3, liste4, liste5)
+    liste6 = list(np.roll(nombre, gauche[0]))
+    liste7 = list(np.roll(nombre, gauche[0]))
+    liste8 = list(np.roll(nombre, droite[0]))
+    sudoku.append(nombre), sudoku.append(liste1), sudoku.append(liste2)
+    sudoku.append(liste3), sudoku.append(liste4), sudoku.append(liste5)
+    sudoku.append(liste6), sudoku.append(liste7), sudoku.append(liste8)
     return sudoku
 
 
@@ -44,7 +50,8 @@ def grille():
         for j in range(9):
             x, y = (LARGEUR//9)*i, (HAUTEUR//9)*j
             x1, y1 = x+(LARGEUR//9), y+(HAUTEUR//9)
-            canvas.create_rectangle(x, y, x1, y1, fill="white", tags=f"carré_{j}_{i}")
+            canvas.create_rectangle(x, y, x1, y1, fill="white",
+                                    tags=f"carré_{j}_{i}")
     canvas.create_line(LARGEUR//3, 0, LARGEUR//3, HAUTEUR, width=5)
     canvas.create_line((LARGEUR//3)*2, 0, (LARGEUR//3)*2, HAUTEUR, width=5)
     canvas.create_line(0, HAUTEUR//3, LARGEUR, HAUTEUR//3, width=5)
@@ -75,7 +82,7 @@ def checkligne(a):
         if a[i].count(nombre[k]) != 1:
             return False
         k += 1
-    return True 
+    return True
 
 
 def lirecolonne(a):
@@ -134,7 +141,6 @@ def lirecarre(a):
     return acarre
 
 
-
 def verification(a):
     """Verfie que tout le sudoku respecte les regles"""
     return checkligne(a), lirecolonne(checkligne(a)), lirecarre(checkligne(a))
@@ -151,22 +157,23 @@ def difficulte(liste, str):
         case = 56
     for i in range(case):
         while case > 1:
-            i, j = rd.randint(0,8), rd.randint(0,8)
+            i, j = rd.randint(0, 8), rd.randint(0, 8)
             if copie[i][j] == 0:
                 pass
             else:
                 copie[i][j] = 0
                 case -= 1
-    return liste, copie 
+    return liste, copie
 
 
-#interface graphique
+# interface graphique
 racine = tk.Tk()
 racine.title("Sudoku")
 canvas = tk.Canvas(racine, height=HAUTEUR, width=LARGEUR, background='white')
 tk.Button(racine, text='Grille', command=grille).grid(row=0, column=0)
 tk.Button(racine, text='Rejouer', command=rejouer).grid(row=1, column=0)
-tk.Label(racine, text="Chiffre à mettre dans la grille\nentre 1 et 9").grid(row=0, column=2)
+tk.Label(racine, text="Chiffre à mettre dans\
+         la grille\nentre 1 et 9").grid(row=0, column=2)
 entry = tk.Entry(racine, width=3).grid(row=1, column=2)
 canvas.grid(row=0, column=1, rowspan=10)
 canvas.bind('<ButtonRelease-1>', donnecoord)
