@@ -58,6 +58,11 @@ def grille():
     canvas.create_line(0, (HAUTEUR//3)*2, LARGEUR, (HAUTEUR//3)*2, width=5)
 
 
+def affiche_grille(liste):
+    """affiche le sudoku sur l'interface graphique"""
+    pass
+
+
 def rejouer():
     """Permet de relancer une partie (à finir)"""
     canvas.delete('all')
