@@ -11,27 +11,58 @@ COTE3 = COTE//3
 COTE9 = COTE//9
 item_id = 0
 
-test = [[6, 2, 5, 8, 4, 3, 7, 9, 1],
-[7, 9, 1, 2, 6, 5, 4, 8, 3],
-[4, 8, 3, 9, 7, 1, 6, 2, 5],
-[8, 1, 4, 5, 9, 7, 2, 3, 6],
-[2, 3, 6, 1, 8, 4, 9, 5, 7],
-[9, 5, 7, 3, 2, 6, 8, 1, 4],
-[5, 6, 9, 4, 3, 2, 1, 7, 8],
-[3, 4, 2, 7, 1, 8, 5, 6, 9],
-[1, 7, 8, 6, 5, 9, 3, 4, 2]]
-
-test2 = [[1, 2, 3, 4, 5, 6, 7, 8, 9],
- [1, 2, 3, 4, 5, 6, 7, 8, 9],
- [1, 2, 3, 4, 5, 6, 7, 8, 9],
- [1, 2, 3, 4, 5, 6, 7, 8, 9],
- [1, 2, 3, 4, 5, 6, 7, 8, 9],
- [1, 2, 3, 4, 5, 6, 7, 8, 9],
- [1, 2, 3, 4, 5, 6, 7, 8, 9],
- [1, 2, 3, 4, 5, 6, 7, 8, 9],
- [1, 2, 3, 4, 5, 6, 7, 8, 9]]
-
 # fonctions et GUI
+
+
+def generate_sudoku():
+    # Create a 9x9 grid with all cells set to 0
+    grid = [[0 for _ in range(9)] for _ in range(9)]
+
+    # Fill in the diagonal sub-grids with valid values
+    for i in range(0, 9, 3):
+        values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        rd.shuffle(values)
+        for j in range(3):
+            for k in range(3):
+                grid[i+j][i+k] = values.pop()
+
+    # Solve the partially filled grid
+    solve_sudoku(grid)
+
+    return grid
+
+def solve_sudoku(grid):
+    # Find the next empty cell and try to fill it with a valid value
+    def fill_next_empty_cell():
+        for i in range(9):
+            for j in range(9):
+                if grid[i][j] == 0:
+                    for value in range(1, 10):
+                        if is_valid(i, j, value):
+                            grid[i][j] = value
+                            if fill_next_empty_cell():
+                                return True
+                            grid[i][j] = 0
+                    return False
+        return True
+
+    # Check if a value is valid for a given cell
+    def is_valid(row, col, value):
+        for i in range(9):
+            if grid[row][i] == value or grid[i][col] == value:
+                return False
+        subgrid_row = (row // 3) * 3
+        subgrid_col = (col // 3) * 3
+        for i in range(subgrid_row, subgrid_row+3):
+            for j in range(subgrid_col, subgrid_col+3):
+                if grid[i][j] == value:
+                    return False
+        return True
+
+    # Start solving the grid from the first empty cell
+    fill_next_empty_cell()
+
+sudoku = generate_sudoku()
 
 def grille():
     for i in range(9):
@@ -50,26 +81,26 @@ def texte():
     for i in range(81):
         emplacement = canvas.coords(liste[i])
         x, y = (emplacement[0]+emplacement[2])/2, (emplacement[1]+emplacement[3])/2
-        canvas.create_text(x, y, text="__")
+        canvas.create_text(x, y, text=sudoku[i // 9][i % 9])
     print(canvas.find_all())
 
 
 def clic(event):
     global item_id
     if 'item_id' in globals():
+        if 80 > item_id or item_id > 85:
+            canvas.itemconfig(item_id, text =[item_id // 9][item_id % 9])
+            if item_id > 85:
+                item_id -= 85
+            canvas.itemconfig(item_id, fill="white")
+    item_id = event.widget.find_withtag('current')[0]
+    if 80 > item_id or item_id > 85:
         if item_id > 85:
             item_id -= 85
-        canvas.itemconfig(item_id, fill="white")
-    item_id = event.widget.find_withtag('current')[0]
-    print(item_id)
-    if item_id > 85:
-        item_id -= 85
-    print(item_id)
-    canvas.itemconfig(item_id, fill="grey")
-    item_id += 85
-    canvas.itemconfig(item_id, text="Input:")
-    print(item_id)
-    return item_id
+        canvas.itemconfig(item_id, fill="grey")
+        item_id += 85
+        canvas.itemconfig(item_id, text="Input:")
+        return item_id
 
 
 def texte_chiffre(e):
