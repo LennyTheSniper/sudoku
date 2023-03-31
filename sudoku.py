@@ -4,12 +4,13 @@ import random as rd
 import numpy as np
 import copy as cp
 
-
 # variables
+
 COTE = 650
 COTE3 = COTE//3
 COTE9 = COTE//9
 item_id = 0
+
 test = [[6, 2, 5, 8, 4, 3, 7, 9, 1],
 [7, 9, 1, 2, 6, 5, 4, 8, 3],
 [4, 8, 3, 9, 7, 1, 6, 2, 5],
@@ -19,6 +20,7 @@ test = [[6, 2, 5, 8, 4, 3, 7, 9, 1],
 [5, 6, 9, 4, 3, 2, 1, 7, 8],
 [3, 4, 2, 7, 1, 8, 5, 6, 9],
 [1, 7, 8, 6, 5, 9, 3, 4, 2]]
+
 test2 = [[1, 2, 3, 4, 5, 6, 7, 8, 9],
  [1, 2, 3, 4, 5, 6, 7, 8, 9],
  [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -30,6 +32,7 @@ test2 = [[1, 2, 3, 4, 5, 6, 7, 8, 9],
  [1, 2, 3, 4, 5, 6, 7, 8, 9]]
 
 # fonctions et GUI
+
 def grille():
     for i in range(9):
         for j in range(9):
@@ -47,12 +50,16 @@ def texte():
     for i in range(81):
         emplacement = canvas.coords(liste[i])
         x, y = (emplacement[0]+emplacement[2])/2, (emplacement[1]+emplacement[3])/2
-        canvas.create_text(x, y, text="test")
+        canvas.create_text(x, y, text="__")
     print(canvas.find_all())
 
 
 def clic(event):
     global item_id
+    if 'item_id' in globals():
+        if item_id > 85:
+            item_id -= 85
+        canvas.itemconfig(item_id, fill="white")
     item_id = event.widget.find_withtag('current')[0]
     print(item_id)
     if item_id > 85:
@@ -60,78 +67,20 @@ def clic(event):
     print(item_id)
     canvas.itemconfig(item_id, fill="grey")
     item_id += 85
-    canvas.itemconfig(item_id, text="en attente")
+    canvas.itemconfig(item_id, text="Input:")
     print(item_id)
     return item_id
 
 
-def un(event):
+def texte_chiffre(e):
     global item_id
-    canvas.itemconfig(item_id, text="1")
-    item_id -= 85
-    canvas.itemconfig(item_id, fill="white")
-    item_id = 0
-    return item_id
-
-def deux(event):
-    global item_id
-    canvas.itemconfig(item_id, text="2")
-    item_id -= 85
-    canvas.itemconfig(item_id, fill="white")
-    item_id = 0
-    return item_id
-
-def trois(event):
-    global item_id
-    canvas.itemconfig(item_id, text="3")
-    item_id -= 85
-    canvas.itemconfig(item_id, fill="white")
-    item_id = 0
-    return item_id
-
-def quatre(event):
-    global item_id
-    canvas.itemconfig(item_id, text="4")
-    item_id -= 85
-    canvas.itemconfig(item_id, fill="white")
-    item_id = 0
-    return item_id
-
-def cinq(event):
-    global item_id
-    canvas.itemconfig(item_id, text="5")
-    item_id -= 85
-    canvas.itemconfig(item_id, fill="white")
-    item_id = 0
-    return item_id
-
-def six(event):
-    global item_id
-    canvas.itemconfig(item_id, text="6")
-    item_id -= 85
-    canvas.itemconfig(item_id, fill="white")
-    item_id = 0
-    return item_id
-
-def sept(event):
-    global item_id
-    canvas.itemconfig(item_id, text="7")
-    item_id -= 85
-    canvas.itemconfig(item_id, fill="white")
-    item_id = 0
-    return item_id
-
-def huit(event):
-    global item_id
-    canvas.itemconfig(item_id, text="8")
-    item_id -= 85
-    canvas.itemconfig(item_id, fill="white")
-    item_id = 0
-    return item_id
-
-def neuf(event):
-    global item_id
-    canvas.itemconfig(item_id, text="9")
+    additional_keys = ["ampersand","eacute","quotedbl","apostrophe","parenleft","minus","egrave","underscore","ccedilla"]
+    key = str(e.keysym)
+    if key in additional_keys:
+        key = str(additional_keys.index(key) + 1)
+    if 'F' in key:
+        key = key[1]
+    canvas.itemconfig(item_id, text = key)
     item_id -= 85
     canvas.itemconfig(item_id, fill="white")
     item_id = 0
@@ -208,16 +157,16 @@ racine = tk.Tk()
 racine.title("SUDOKU")
 canvas = tk.Canvas(racine, height=COTE, width=COTE, bg="white")
 canvas.grid(row=0, column=1, rowspan=10)
+
 grille()
 texte()
+
 canvas.bind('<ButtonRelease-1>', clic)
-racine.bind('<F1>', un)
-racine.bind('<F2>', deux)
-racine.bind('<F3>', trois)
-racine.bind('<F4>', quatre)
-racine.bind('<F5>', cinq)
-racine.bind('<F6>', six)
-racine.bind('<F7>', sept)
-racine.bind('<F8>', huit)
-racine.bind('<F9>', neuf)
+
+for i in range(1,10):
+    racine.bind(str(i), texte_chiffre)
+    racine.bind('<F'+str(i)+'>', texte_chiffre)
+for i in ["&","<eacute>",'"',"'","(","-","<egrave>","_","<ccedilla>"]:
+    racine.bind(i,texte_chiffre)
+
 racine.mainloop()
