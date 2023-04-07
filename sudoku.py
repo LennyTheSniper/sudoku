@@ -1,24 +1,292 @@
 # import
 import tkinter as tk
 import random as rd
-import numpy as np
 import copy as cp
 
 # variables
-
 COTE = 650
 COTE3 = COTE//3
 COTE9 = COTE//9
 item_id = 0
+solution = None
+sudoku = None
+copie_sudoku = None
+debut = 0
+erreur = 0
 
 # fonctions et GUI
+def grille():
+    """ Trace les lignes du sudoku """
+    for i in range(9):
+        for j in range(9):
+            x, y = (COTE9)*j, (COTE9)*i
+            x1, y1 = x+COTE9, y+COTE9
+            canvas.create_rectangle(x, y, x1, y1, fill="white")
+    canvas.create_line(COTE3, 0, COTE3, COTE, width=5)
+    canvas.create_line(COTE3*2, 0, COTE3*2, COTE, width=5)
+    canvas.create_line(0, COTE3, COTE, COTE3, width=5)
+    canvas.create_line(0, COTE3*2, COTE, COTE3*2, width=5)
 
 
-def generate_sudoku():
-    """Create a 9x9 grid with all cells set to 0"""
+def texte():
+    """Met une zone de texte dans tous les carrés du sudoku """
+    liste = canvas.find_all()
+    for i in range(81):
+        emplacement = canvas.coords(liste[i])
+        x, y = (emplacement[0]+emplacement[2])/2, (emplacement[1]+emplacement[3])/2
+        canvas.create_text(x, y, text="", font=("Arial", 17, "bold"))
+    # print(canvas.find_all())
+
+
+def clic(event):
+    """ Selectionne un carre dans le sudoku """
+    global item_id
+    if item_id != 0:
+        enlever_aide()
+    item_id = event.widget.find_withtag('current')[0]
+    if item_id in [82, 83, 84, 85]:
+        item_id = 0
+    # print(item_id)
+    if item_id > 82:
+        item_id -= 85
+    # print(item_id)
+    canvas.itemconfig(item_id, fill="grey")
+    item_id += 85
+    textelabel.set("f1-f9 pour chiffre de 1 à 9 et f10 pour effacer")
+    # print(item_id)
+    return item_id
+
+
+def un(event):
+    """ Met un 1 sur la grille du sudoku et sur l'interface graphique 
+        et verifie si la partie est finie """
+    global item_id, solution, sudoku, erreur
+    canvas.itemconfig(item_id, text="1")
+    item_id -= 85
+    if item_id%9==0:
+        i, j = item_id//9-1, 8
+    else:
+        i, j = item_id//9, item_id%9-1
+    if solution[i][j] == 1:
+        canvas.itemconfig(item_id, fill="white")
+        item_id = 0
+        sudoku[i][j] = 1
+        if solution == sudoku:
+            fin()
+    else:
+        canvas.itemconfig(item_id, fill="red")
+        item_id = 0
+        erreur += 1
+    return item_id, solution, sudoku, erreur
+
+
+def deux(event):
+    """ Met un 2 sur la grille du sudoku et sur l'interface graphique 
+        et verifie si la partie est finie """
+    global item_id, solution, sudoku, erreur
+    canvas.itemconfig(item_id, text="2")
+    item_id -= 85
+    if item_id%9==0:
+        i, j = item_id//9-1, 8
+    else:
+        i, j = item_id//9, item_id%9-1
+    if solution[i][j] == 2:
+        canvas.itemconfig(item_id, fill="white")
+        item_id = 0
+        sudoku[i][j] = 2
+        if solution == sudoku:
+            fin()
+    else:
+        canvas.itemconfig(item_id, fill="red")
+        item_id = 0
+        erreur += 1
+    return item_id, solution, sudoku, erreur
+
+
+def trois(event):
+    """ Met un 3 sur la grille du sudoku et sur l'interface graphique 
+        et verifie si la partie est finie """
+    global item_id, solution, sudoku, erreur
+    canvas.itemconfig(item_id, text="3")
+    item_id -= 85
+    if item_id%9==0:
+        i, j = item_id//9-1, 8
+    else:
+        i, j = item_id//9, item_id%9-1
+    if solution[i][j] == 3:
+        canvas.itemconfig(item_id, fill="white")
+        item_id = 0
+        sudoku[i][j] = 3
+        if solution == sudoku:
+            fin()
+    else:
+        canvas.itemconfig(item_id, fill="red")
+        item_id = 0
+        erreur += 1
+    return item_id, solution, sudoku, erreur
+
+
+def quatre(event):
+    """ Met un 4 sur la grille du sudoku et sur l'interface graphique 
+        et verifie si la partie est finie """
+    global item_id, solution, sudoku, erreur
+    canvas.itemconfig(item_id, text="4")
+    item_id -= 85
+    if item_id%9==0:
+        i, j = item_id//9-1, 8
+    else:
+        i, j = item_id//9, item_id%9-1
+    if solution[i][j] == 4:
+        canvas.itemconfig(item_id, fill="white")
+        item_id = 0
+        sudoku[i][j] = 4
+        if solution == sudoku:
+            fin()
+    else:
+        canvas.itemconfig(item_id, fill="red")
+        item_id = 0
+        erreur += 1
+    return item_id, solution, sudoku, erreur
+
+
+def cinq(event):
+    """ Met un 5 sur la grille du sudoku et sur l'interface graphique 
+        et verifie si la partie est finie """
+    global item_id, solution, sudoku, erreur
+    canvas.itemconfig(item_id, text="5")
+    item_id -= 85
+    if item_id%9==0:
+        i, j = item_id//9-1, 8
+    else:
+        i, j = item_id//9, item_id%9-1
+    if solution[i][j] == 5:
+        canvas.itemconfig(item_id, fill="white")
+        item_id = 0
+        sudoku[i][j] = 5
+        if solution == sudoku:
+            fin()
+    else:
+        canvas.itemconfig(item_id, fill="red")
+        item_id = 0
+        erreur += 1
+    return item_id, solution, sudoku, erreur
+
+
+def six(event):
+    """ Met un 6 sur la grille du sudoku et sur l'interface graphique 
+        et verifie si la partie est finie """
+    global item_id, solution, sudoku, erreur
+    canvas.itemconfig(item_id, text="6")
+    item_id -= 85
+    if item_id%9==0:
+        i, j = item_id//9-1, 8
+    else:
+        i, j = item_id//9, item_id%9-1
+    if solution[i][j] == 6:
+        canvas.itemconfig(item_id, fill="white")
+        item_id = 0
+        sudoku[i][j] = 6
+        if solution == sudoku:
+            fin()
+    else:
+        canvas.itemconfig(item_id, fill="red")
+        item_id = 0
+        erreur += 1
+    return item_id, solution, sudoku, erreur
+
+
+def sept(event):
+    """ Met un 7 sur la grille du sudoku et sur l'interface graphique 
+        et verifie si la partie est finie """
+    global item_id, solution, sudoku, erreur
+    canvas.itemconfig(item_id, text="7")
+    item_id -= 85
+    if item_id%9==0:
+        i, j = item_id//9-1, 8
+    else:
+        i, j = item_id//9, item_id%9-1
+    if solution[i][j] == 7:
+        canvas.itemconfig(item_id, fill="white")
+        item_id = 0
+        sudoku[i][j] = 7
+        if solution == sudoku:
+            fin()
+    else:
+        canvas.itemconfig(item_id, fill="red")
+        item_id = 0
+        erreur += 1
+    return item_id, solution, sudoku, erreur
+
+
+def huit(event):
+    """ Met un 8 sur la grille du sudoku et sur l'interface graphique 
+        et verifie si la partie est finie """
+    global item_id, solution, sudoku, erreur
+    canvas.itemconfig(item_id, text="8")
+    item_id -= 85
+    if item_id%9==0:
+        i, j = item_id//9-1, 8
+    else:
+        i, j = item_id//9, item_id%9-1
+    if solution[i][j] == 8:
+        canvas.itemconfig(item_id, fill="white")
+        item_id = 0
+        sudoku[i][j] = 8
+        if solution == sudoku:
+            fin()
+    else:
+        canvas.itemconfig(item_id, fill="red")
+        item_id = 0
+        erreur += 1
+    return item_id, solution, sudoku, erreur
+
+
+def neuf(event):
+    """ Met un 9 sur la grille du sudoku et sur l'interface graphique 
+        et verifie si la partie est finie"""
+    global item_id, solution, sudoku, erreur
+    canvas.itemconfig(item_id, text="9")
+    #print(item_id)
+    item_id -= 85
+    #print(item_id)
+    if item_id%9==0:
+        i, j = item_id//9-1, 8
+    else:
+        i, j = item_id//9, item_id%9-1
+    #print((i, j))
+    #for l in solution:
+    #    print(l)
+    #print(solution[i][j])
+    if solution[i][j] == 9:
+        canvas.itemconfig(item_id, fill="white")
+        item_id = 0
+        sudoku[i][j] = 9
+        if solution == sudoku:
+            fin()
+    else:
+        canvas.itemconfig(item_id, fill="red")
+        item_id = 0
+        erreur += 1
+    return item_id, solution, sudoku, erreur
+
+
+def effacer(event):
+    """ Efface sur l'interface graphique le nombre sur l'interface graphique 
+        et verifie si la partie est finie"""
+    global item_id
+    canvas.itemconfig(item_id, text="")
+    item_id -= 85
+    canvas.itemconfig(item_id, fill="white")
+    item_id = 0
+    return item_id
+
+
+def generatesudoku():
+    global solution
+    # Create a 9x9 grid with all cells set to 0
     grid = [[0 for _ in range(9)] for _ in range(9)]
 
-    """Fill in the diagonal sub-grids with valid values"""
+    # Fill in the diagonal sub-grids with valid values
     for i in range(0, 9, 3):
         values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         rd.shuffle(values)
@@ -26,13 +294,14 @@ def generate_sudoku():
             for k in range(3):
                 grid[i+j][i+k] = values.pop()
 
-    """Solve the partially filled grid"""
+    # Solve the partially filled grid
     solve_sudoku(grid)
+    solution = cp.deepcopy(grid)
+    return solution
 
-    return grid
 
 def solve_sudoku(grid):
-    """Find the next empty cell and try to fill it with a valid value"""
+    # Find the next empty cell and try to fill it with a valid value
     def fill_next_empty_cell():
         for i in range(9):
             for j in range(9):
@@ -46,7 +315,7 @@ def solve_sudoku(grid):
                     return False
         return True
 
-    """Check if a value is valid for a given cell"""
+    # Check if a value is valid for a given cell
     def is_valid(row, col, value):
         for i in range(9):
             if grid[row][i] == value or grid[i][col] == value:
@@ -59,93 +328,166 @@ def solve_sudoku(grid):
                     return False
         return True
 
-    """Start solving the grid from the first empty cell"""
+    # Start solving the grid from the first empty cell
     fill_next_empty_cell()
 
-sudoku = generate_sudoku()
 
-def grille():
+
+def case_vide():
+    """ Prend la solution du sudoku et renvoie un sudoku avec des trous """
+    global solution, sudoku, copie_sudoku
+    sudoku = cp.deepcopy(solution)
+    random = rd.randint(81//3, 81//2)
+    for k in range(random):
+        i, j = rd.randint(0, 8), rd.randint(0, 8)
+        sudoku[i][j] = 0
+    copie_sudoku = cp.deepcopy(sudoku)
+    return sudoku, copie_sudoku
+    
+    
+def commencer():
+    """ Initialise le sudoku et le timer """
+    generatesudoku()
+    print(solution)
+    case_vide()
+    mise_en_place()
+    temps()
+    textelabel.set("Bon jeu à vous")
+
+def annuler():
+    """ Annule la partie en cours et reinitialise toutes les variables """
+    global solution, sudoku, copie_sudoku, item_id, debut, erreur
+    solution, sudoku, copie_sudoku, item_id, debut, erreur = None, None, None, 0, 0, 0
+    textelabel.set("Appuyer sur le bouton Commencer pour recommencer")
+    for i in range(1, 82):
+        canvas.itemconfig(i, fill="white")
+        canvas.itemconfig(85+i, text="")
+    return solution, sudoku, copie_sudoku, item_id, debut, erreur
+
+
+def sauvegarder():
+    """ Sauvegarde la partie en cours dans un fichier texte (écrase la sauvegarde précédente) """
+    global solution, sudoku, copie_sudoku
+    partie = str([solution, sudoku, copie_sudoku])
+    with open("save.txt", "w") as fichier:
+        fichier.write(partie)
+    textelabel.set("Partie Sauvegardée")
+
+
+def charger():
+    """ Charge une partie sauvegardée """
+    global solution, sudoku, copie_sudoku
+    textelabel.set("Chargement ...")
+    with open("save.txt", "r") as fichier:
+        partie = eval(fichier.readline())
+    # print(type(partie))
+    solution = partie[0]
+    sudoku = partie[1]
+    copie_sudoku = partie[2]
+    for i in range(1, 82):
+        canvas.itemconfig(i, fill="white")
+        canvas.itemconfig(85+i, text="")
+    mise_en_place()
+    textelabel.set("Partie Chargée")
+    return solution, sudoku, copie_sudoku
+
+def aide():
+    """ Indique les cases pré-remplies en début de partie """
+    global copie_sudoku
+    textelabel.set("Voici les cases données en début de partie")
+    for i in range(82):
+        item_id = i
+        canvas.itemconfig(item_id, fill="white")
     for i in range(9):
         for j in range(9):
-            x, y = (COTE9)*j, (COTE9)*i
-            x1, y1 = x+COTE9, y+COTE9
-            canvas.create_rectangle(x, y, x1, y1, fill="white")
-    canvas.create_line(COTE3, 0, COTE3, COTE, width=5)
-    canvas.create_line(COTE3*2, 0, COTE3*2, COTE, width=5)
-    canvas.create_line(0, COTE3, COTE, COTE3, width=5)
-    canvas.create_line(0, COTE3*2, COTE, COTE3*2, width=5)
-
-
-def texte():
-    liste = canvas.find_all()
-    """Change 40 to the number of cells to reveal"""
-    revealed_cells = rd.sample(range(81), 50)
-    for i in range(81):
-        emplacement = canvas.coords(liste[i])
-        x, y = (emplacement[0]+emplacement[2])/2, (emplacement[1]+emplacement[3])/2
-        if i in revealed_cells:
-            canvas.create_text(x, y, text=sudoku[i // 9][i % 9], tags="default_number", font=('Arial',17,'bold'))
-        else:
-            canvas.create_text(x, y, text=" ",font=('Arial',10))
-    print(canvas.find_all())
-
-
-def clic(event):
-    global item_id
-    if 'item_id' in globals():
-        if (80 > item_id or item_id > 85) and ("default_number" not in canvas.gettags(item_id)):
-            canvas.itemconfig(item_id, text ="")
-            if item_id > 85:
-                item_id -= 85
-            canvas.itemconfig(item_id, fill="white")
-        else:
-            item_id = 0
-    item_id = event.widget.find_withtag('current')[0]
-    if 80 > item_id or item_id > 85:
-        if item_id <= 80:
-            item_id += 85
-            if "default_number" not in canvas.gettags(item_id):
-                item_id -= 85
-                canvas.itemconfig(item_id, fill="grey")
-                item_id += 85
-                canvas.itemconfig(item_id, text="Input:")
-                return item_id
+            if copie_sudoku[i][j] == 0:
+                pass
             else:
-                item_id = 0
+                item_id = (i*9)+(j+1)
+                # print(item_id)
+                canvas.itemconfig(item_id, fill="light blue")
+
+
+def aide2():
+    """ Indique les cases actuellement vides """
+    global sudoku
+    for i in range(82):
+        item_id = i
+        canvas.itemconfig(item_id, fill="white")
+    for i in range(9):
+        for j in range(9):
+            if sudoku[i][j] == 0:
+                item_id = (i*9)+(j+1)
+                canvas.itemconfig(item_id, fill="pink")
 
 
 
-def texte_chiffre(e):
-    global item_id
-    additional_keys = ["ampersand","eacute","quotedbl","apostrophe","parenleft","minus","egrave","underscore","ccedilla"]
-    key = str(e.keysym)
-    if key in additional_keys:
-        key = str(additional_keys.index(key) + 1)
-    elif 'F' in key:
-        key = key[1]
-    elif key in ["space","Return","BackSpace","Escape","Delete"]:
-        key = ''
-    canvas.itemconfig(item_id, text = key)
-    item_id -= 85
-    canvas.itemconfig(item_id, fill="white")
-    item_id = 0
-    return item_id
+def mise_en_place():
+    """ Affiche graphiquement ce qui est contenu dans sudoku """
+    global sudoku
+    for i in range(9):
+        for j in range(9):
+            if sudoku[i][j] == 0:
+                pass
+            else:
+                item_id = (i*9)+(j+1)+85
+                canvas.itemconfig(item_id, text=str(sudoku[i][j]))
+
+
+def enlever_aide():
+    """ Enleve les aides """
+    for i in range(82):
+        item_id = i
+        canvas.itemconfig(item_id, fill="white")
+
+
+def fin():
+    """ Arrete le timer et renvoie le temps """
+    global debut, erreur
+    maintenant = tm.time()
+    textelabel.set("Partie terminée")
+    ecart = str(int(maintenant-debut))
+    textetimer.set(ecart + " secondes et" + str(erreur) + "erreur(s)")
+    with open("temps.txt", "a") as f:
+        f.write(ecart + " secondes et" + str(erreur) + " erreur(s)")
+    canvas.after(5000, annuler)
+    debut, erreur = 0, 0
+    return debut, erreur
+
+
+def temps():
+    """ Renvoie le temps du debut de la partie dans une variable debut """
+    global debut
+    debut = tm.time()
+    return debut
 
 
 racine = tk.Tk()
 racine.title("SUDOKU")
+textelabel = tk.StringVar(racine, "Appuyer sur le bouton Commencer")
+textetimer = tk.StringVar(racine, "Votre temps s'affichera ici")
+label = tk.Label(racine, textvariable=textelabel).grid(row=0, column=1)
+timer = tk.Label(racine, textvariable=textetimer).grid(row=0, column=2)
 canvas = tk.Canvas(racine, height=COTE, width=COTE, bg="white")
-canvas.grid(row=0, column=1, rowspan=10)
-
+canvas.grid(row=1, column=1, rowspan=10)
+start = tk.Button(racine, text="Commencer", command=commencer).grid(row=1, column=0)
+help = tk.Button(racine, text="Case donnée", command=aide).grid(row=2, column=0)
+help2 = tk.Button(racine, text="Contraintes", command=aide2).grid(row=3, column=0)
+cancel_help = tk.Button(racine, text="Enlever aide", command=enlever_aide).grid(row=4, column=0)
+cancel = tk.Button(racine, text="Annuler la partie", command=annuler).grid(row=5, column=0)
+save = tk.Button(racine, text="Sauvegarder", command=sauvegarder).grid(row=1, column=2)
+load = tk.Button(racine, text="Charger", command=charger).grid(row=2, column=2)
+canvas.bind('<ButtonRelease-1>', clic)
+racine.bind('<F1>', un)
+racine.bind('<F2>', deux)
+racine.bind('<F3>', trois)
+racine.bind('<F4>', quatre)
+racine.bind('<F5>', cinq)
+racine.bind('<F6>', six)
+racine.bind('<F7>', sept)
+racine.bind('<F8>', huit)
+racine.bind('<F9>', neuf)
+racine.bind('<F10>', effacer)
 grille()
 texte()
-
-canvas.bind('<ButtonRelease-1>', clic)
-
-for i in range(1,10):
-    racine.bind(str(i), texte_chiffre)
-    racine.bind('<F'+str(i)+'>', texte_chiffre)
-for i in ["&","<eacute>",'"',"'","(","-","<egrave>","_","<ccedilla>","<space>","<Delete>","<BackSpace>","<Escape>","<Return>"]:
-    racine.bind(i,texte_chiffre)
-
 racine.mainloop()
