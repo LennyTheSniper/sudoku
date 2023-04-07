@@ -408,60 +408,6 @@ def aide():
                 canvas.itemconfig(item_id, fill="light blue")
 
 
-def aide2():
-    """ Indique les cases actuellement vides """
-    global sudoku
-    for i in range(82):
-        item_id = i
-        canvas.itemconfig(item_id, fill="white")
-    for i in range(9):
-        for j in range(9):
-            if sudoku[i][j] == 0:
-                item_id = (i*9)+(j+1)
-                canvas.itemconfig(item_id, fill="pink")
-
-
-
-def mise_en_place():
-    """ Affiche graphiquement ce qui est contenu dans sudoku """
-    global sudoku
-    for i in range(9):
-        for j in range(9):
-            if sudoku[i][j] == 0:
-                pass
-            else:
-                item_id = (i*9)+(j+1)+85
-                canvas.itemconfig(item_id, text=str(sudoku[i][j]))
-
-
-def enlever_aide():
-    """ Enleve les aides """
-    for i in range(82):
-        item_id = i
-        canvas.itemconfig(item_id, fill="white")
-
-
-def fin():
-    """ Arrete le timer et renvoie le temps """
-    global debut, erreur
-    maintenant = tm.time()
-    textelabel.set("Partie terminée")
-    ecart = str(int(maintenant-debut))
-    textetimer.set(ecart + " secondes et" + str(erreur) + "erreur(s)")
-    with open("temps.txt", "a") as f:
-        f.write(ecart + " secondes et" + str(erreur) + " erreur(s)")
-    canvas.after(5000, annuler)
-    debut, erreur = 0, 0
-    return debut, erreur
-
-
-def temps():
-    """ Renvoie le temps du debut de la partie dans une variable debut """
-    global debut
-    debut = tm.time()
-    return debut
-
-
 racine = tk.Tk()
 racine.title("SUDOKU")
 textelabel = tk.StringVar(racine, "Appuyer sur le bouton Commencer")
