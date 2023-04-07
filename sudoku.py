@@ -15,10 +15,10 @@ item_id = 0
 
 
 def generate_sudoku():
-    # Create a 9x9 grid with all cells set to 0
+    """Create a 9x9 grid with all cells set to 0"""
     grid = [[0 for _ in range(9)] for _ in range(9)]
 
-    # Fill in the diagonal sub-grids with valid values
+    """Fill in the diagonal sub-grids with valid values"""
     for i in range(0, 9, 3):
         values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         rd.shuffle(values)
@@ -26,13 +26,13 @@ def generate_sudoku():
             for k in range(3):
                 grid[i+j][i+k] = values.pop()
 
-    # Solve the partially filled grid
+    """Solve the partially filled grid"""
     solve_sudoku(grid)
 
     return grid
 
 def solve_sudoku(grid):
-    # Find the next empty cell and try to fill it with a valid value
+    """Find the next empty cell and try to fill it with a valid value"""
     def fill_next_empty_cell():
         for i in range(9):
             for j in range(9):
@@ -46,7 +46,7 @@ def solve_sudoku(grid):
                     return False
         return True
 
-    # Check if a value is valid for a given cell
+    """Check if a value is valid for a given cell"""
     def is_valid(row, col, value):
         for i in range(9):
             if grid[row][i] == value or grid[i][col] == value:
@@ -59,7 +59,7 @@ def solve_sudoku(grid):
                     return False
         return True
 
-    # Start solving the grid from the first empty cell
+    """Start solving the grid from the first empty cell"""
     fill_next_empty_cell()
 
 sudoku = generate_sudoku()
@@ -78,29 +78,41 @@ def grille():
 
 def texte():
     liste = canvas.find_all()
+    """Change 40 to the number of cells to reveal"""
+    revealed_cells = rd.sample(range(81), 50)
     for i in range(81):
         emplacement = canvas.coords(liste[i])
         x, y = (emplacement[0]+emplacement[2])/2, (emplacement[1]+emplacement[3])/2
-        canvas.create_text(x, y, text=sudoku[i // 9][i % 9])
+        if i in revealed_cells:
+            canvas.create_text(x, y, text=sudoku[i // 9][i % 9], tags="default_number", font=('Arial',17,'bold'))
+        else:
+            canvas.create_text(x, y, text=" ",font=('Arial',10))
     print(canvas.find_all())
 
 
 def clic(event):
     global item_id
     if 'item_id' in globals():
-        if 80 > item_id or item_id > 85:
-            canvas.itemconfig(item_id, text =[item_id // 9][item_id % 9])
+        if (80 > item_id or item_id > 85) and ("default_number" not in canvas.gettags(item_id)):
+            canvas.itemconfig(item_id, text ="")
             if item_id > 85:
                 item_id -= 85
             canvas.itemconfig(item_id, fill="white")
+        else:
+            item_id = 0
     item_id = event.widget.find_withtag('current')[0]
     if 80 > item_id or item_id > 85:
-        if item_id > 85:
-            item_id -= 85
-        canvas.itemconfig(item_id, fill="grey")
-        item_id += 85
-        canvas.itemconfig(item_id, text="Input:")
-        return item_id
+        if item_id <= 80:
+            item_id += 85
+            if "default_number" not in canvas.gettags(item_id):
+                item_id -= 85
+                canvas.itemconfig(item_id, fill="grey")
+                item_id += 85
+                canvas.itemconfig(item_id, text="Input:")
+                return item_id
+            else:
+                item_id = 0
+
 
 
 def texte_chiffre(e):
@@ -109,79 +121,15 @@ def texte_chiffre(e):
     key = str(e.keysym)
     if key in additional_keys:
         key = str(additional_keys.index(key) + 1)
-    if 'F' in key:
+    elif 'F' in key:
         key = key[1]
+    elif key in ["space","Return","BackSpace","Escape","Delete"]:
+        key = ''
     canvas.itemconfig(item_id, text = key)
     item_id -= 85
     canvas.itemconfig(item_id, fill="white")
     item_id = 0
     return item_id
-
-def verifligne(liste):
-    for i in range(len(liste)):
-        for j in range(1, len(liste)):
-            if liste[i].count(j) != 1:
-                return False
-    return True
-
-
-def lirecolonne(liste):
-    listecolonne = [[0]*9 for i in range(9)]
-    for i in range(9):
-        for j in range(9):
-            listecolonne[i][j] = liste[j][i]
-    return listecolonne
-
-
-def lirecarre(liste):
-    listecarre = list()
-    uneliste = list()
-    while len(listecarre) < 8:
-        for i in range(3):
-            for j in range(3):
-                uneliste.append(liste[i][j])
-        listecarre.append(uneliste)
-        uneliste = list()
-        for i in range(3):
-            for j in range(3, 6):
-                uneliste.append(liste[i][j])
-        listecarre.append(uneliste)
-        uneliste = list()
-        for i in range(3):
-            for j in range(6, 9):
-                uneliste.append(liste[i][j])
-        listecarre.append(uneliste)
-        uneliste = list()
-        for i in range(3,6):
-            for j in range(3):
-                uneliste.append(liste[i][j])
-        listecarre.append(uneliste)
-        uneliste = list()
-        for i in range(3, 6):
-            for j in range(3, 6):
-                uneliste.append(liste[i][j])
-        listecarre.append(uneliste)
-        uneliste = list()
-        for i in range(3,6):
-            for j in range(6, 9):
-                uneliste.append(liste[i][j])
-        listecarre.append(uneliste)
-        uneliste = list()
-        for i in range(6, 9):
-            for j in range(3):
-                uneliste.append(liste[i][j])
-        listecarre.append(uneliste)
-        uneliste = list()
-        for i in range(6, 9):
-            for j in range(3, 6):
-                uneliste.append(liste[i][j])
-        listecarre.append(uneliste)
-        uneliste = list()
-        for i in range(6, 9):
-            for j in range(6, 9):
-                uneliste.append(liste[i][j])
-        listecarre.append(uneliste)
-    return listecarre
 
 
 racine = tk.Tk()
@@ -197,7 +145,7 @@ canvas.bind('<ButtonRelease-1>', clic)
 for i in range(1,10):
     racine.bind(str(i), texte_chiffre)
     racine.bind('<F'+str(i)+'>', texte_chiffre)
-for i in ["&","<eacute>",'"',"'","(","-","<egrave>","_","<ccedilla>"]:
+for i in ["&","<eacute>",'"',"'","(","-","<egrave>","_","<ccedilla>","<space>","<Delete>","<BackSpace>","<Escape>","<Return>"]:
     racine.bind(i,texte_chiffre)
 
 racine.mainloop()
