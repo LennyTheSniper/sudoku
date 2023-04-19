@@ -1,6 +1,6 @@
-# TD de Python L1MIIN200N
+# Projet Sudoku Python L1-MI-IN200N
 
-Ce TD a été réalisé par:
+Ce projet a été réalisé par:
 
     Lenny BARBE
     Rim GNICHI
