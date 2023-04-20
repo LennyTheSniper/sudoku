@@ -20,7 +20,7 @@ Pour commencer une partie, appuyez sur le bouton 'Commencer'. Cela fera apparaî
 
 Lorsque vous pensez avoir trouver le bon nombre qui coincide avec la grille cliquez sur la case choisit puis appuyer sur la touche de votre clavier correspondant au chiffre (touche de 1 à 9) ou sur les touches allant de F1 à F9 (avec F1 pour le chiffre 1 et F9 pour le chiffre 9 ect ... )
 
-Au cour du jeu , vous pourrez remarquer immediatement si l'emplacement des chiffres que vous avez placé sont correct (la case reste blanche = bon ), ou si il y a une erreur quelque part (la case devient rouge = erreur ).
+Au cour du jeu , vous pourrez remarquer immediatement si l'emplacement des chiffres est correct (la case reste blanche = bon ), ou si il y a une erreur quelque part (la case devient rouge = erreur ).
 
 Si vous vous etes trompé, pour effacer le chiffre : cliquez sur la case en rouge puis appuyer sur F10.
 
