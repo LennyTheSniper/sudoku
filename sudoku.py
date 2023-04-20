@@ -80,7 +80,7 @@ def clic(event):
 
 
 def un(event):
-    """ Met un 1 sur la grille du sudoku et sur l'interface graphique
+    """ Met un 1 sur la grille du sudoku 
         et verifie si la partie est finie """
     global item_id, solution, sudoku, erreur
     canvas.itemconfig(item_id, text="1")
@@ -103,7 +103,7 @@ def un(event):
 
 
 def deux(event):
-    """ Met un 2 sur la grille du sudoku et sur l'interface graphique
+    """ Met un 2 sur la grille du sudoku 
         et verifie si la partie est finie """
     global item_id, solution, sudoku, erreur
     canvas.itemconfig(item_id, text="2")
@@ -126,7 +126,7 @@ def deux(event):
 
 
 def trois(event):
-    """ Met un 3 sur la grille du sudoku et sur l'interface graphique
+    """ Met un 3 sur la grille du sudoku 
         et verifie si la partie est finie """
     global item_id, solution, sudoku, erreur
     canvas.itemconfig(item_id, text="3")
@@ -149,7 +149,7 @@ def trois(event):
 
 
 def quatre(event):
-    """ Met un 4 sur la grille du sudoku et sur l'interface graphique
+    """ Met un 4 sur la grille du sudoku 
         et verifie si la partie est finie """
     global item_id, solution, sudoku, erreur
     canvas.itemconfig(item_id, text="4")
@@ -172,7 +172,7 @@ def quatre(event):
 
 
 def cinq(event):
-    """ Met un 5 sur la grille du sudoku et sur l'interface graphique
+    """ Met un 5 sur la grille du sudoku 
         et verifie si la partie est finie """
     global item_id, solution, sudoku, erreur
     canvas.itemconfig(item_id, text="5")
@@ -195,7 +195,7 @@ def cinq(event):
 
 
 def six(event):
-    """ Met un 6 sur la grille du sudoku et sur l'interface graphique
+    """ Met un 6 sur la grille du sudoku 
         et verifie si la partie est finie """
     global item_id, solution, sudoku, erreur
     canvas.itemconfig(item_id, text="6")
@@ -218,7 +218,7 @@ def six(event):
 
 
 def sept(event):
-    """ Met un 7 sur la grille du sudoku et sur l'interface graphique
+    """ Met un 7 sur la grille du sudoku 
         et verifie si la partie est finie """
     global item_id, solution, sudoku, erreur
     canvas.itemconfig(item_id, text="7")
@@ -241,7 +241,7 @@ def sept(event):
 
 
 def huit(event):
-    """ Met un 8 sur la grille du sudoku et sur l'interface graphique
+    """ Met un 8 sur la grille du sudoku 
         et verifie si la partie est finie """
     global item_id, solution, sudoku, erreur
     canvas.itemconfig(item_id, text="8")
@@ -264,7 +264,7 @@ def huit(event):
 
 
 def neuf(event):
-    """ Met un 9 sur la grille du sudoku et sur l'interface graphique
+    """ Met un 9 sur la grille du sudoku 
         et verifie si la partie est finie"""
     global item_id, solution, sudoku, erreur
     canvas.itemconfig(item_id, text="9")
@@ -293,7 +293,7 @@ def neuf(event):
 
 
 def effacer(event):
-    """ Efface sur l'interface graphique le nombre sur l'interface graphique
+    """ Efface le nombre sur l'interface graphique 
         et verifie si la partie est finie"""
     global item_id
     canvas.itemconfig(item_id, text="")
