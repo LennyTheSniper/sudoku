@@ -18,11 +18,11 @@ Le but du jeu est de compléter la grille prérempli aléatoirement, avec des ch
 En lancant le code, une fenêtre s'affiche contenant une grille vide, et quelques boutons à gauches et à droite.
 Pour commencer une partie, appuyez sur le bouton 'Commencer'. Cela fera apparaître une grille de sudoku avec des chiffres aléatoire et quelques trous.
 
-Lorsque vous pensez avoir trouver le bon nombre qui coincide avec la grille cliquez sur la case choisit puis appuyer sur la touche de votre clavier correspondant au chiffre (touche de 1 à 9) ou sur les touches allant de F1 à F9 (avec F1 pour le chiffre 1 et F9 pour le chiffre 9 ect ... )
+Lorsque vous pensez avoir trouver le bon nombre qui coincide avec la grille cliquez sur la case choisit (la case deviendra grise) puis appuyer sur la touche de votre clavier correspondant au chiffre (touche de 1 à 9) ou sur les touches allant de F1 à F9 (avec F1 pour le chiffre 1 et F9 pour le chiffre 9 ect ... ). Le chiffre sera alors afficher dans la case .
 
-Au cour du jeu , vous pourrez remarquer immediatement si l'emplacement des chiffres est correct (la case reste blanche = bon ), ou si il y a une erreur quelque part (la case devient rouge = erreur ).
+Dès que vous placerez le nombre , vous verrez immediatement si l'emplacement du chiffre est correct (la case devient blanche = bon ), ou si il y a une erreur quelque part (la case devient rouge = erreur ).
 
-Si vous vous etes trompé, pour effacer le chiffre : cliquez sur la case en rouge puis appuyer sur F10.
+Si vous vous etes trompé, pour effacer le chiffre : cliquez sur la case rouge puis appuyer sur F10.
 
 En complétant entièrement le sudoku et si il ne reste plus du tout d'erreur en rouge, votre score en seconde et votre nombre d'erreurs s'affichera en haut à droite de la fenêtre.
 Vous avez aussi accès à certaines aides qui vous rappelle où se trouvent les case préplacées par le jeu et celles qui ont été placées par le joueur en appuyant sur les boutons 'Case Donnée' et 'Contraintes' .
